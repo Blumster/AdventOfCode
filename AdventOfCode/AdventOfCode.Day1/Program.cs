@@ -25,7 +25,7 @@
     return increaseCount;
 }
 
-var lines = File.ReadAllLines("input1.txt");
+var lines = File.ReadAllLines("input.txt");
 
 Console.WriteLine($"Increases(1): {CalcIncreaseCount(lines, 1)}");
 Console.WriteLine($"Increases(3): {CalcIncreaseCount(lines, 3)}");
