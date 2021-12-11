@@ -30,7 +30,10 @@ void SimulateDays(int days)
         foreach (var fishCont in fishContainers)
         {
             if (fishCont.Day == 6)
+            {
                 fishCont.Count += newCycleFishes;
+                break;
+            }
         }
     }
 }
