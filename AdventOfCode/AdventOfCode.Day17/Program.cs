@@ -29,67 +29,67 @@ var end = 0;
 
 if (target.TopLeft.X <= start.X && start.X <= target.BottomRight.X)
 {
-	i = target.TopLeft.X - start.X;
-	inc = 1;
-	end = target.BottomRight.X - start.X;
+    i = target.TopLeft.X - start.X;
+    inc = 1;
+    end = target.BottomRight.X - start.X;
 }
 else if (start.X > target.BottomRight.X)
 {
-	i = 0;
-	inc = -1;
-	end = target.TopLeft.X - start.X;
+    i = 0;
+    inc = -1;
+    end = target.TopLeft.X - start.X;
 }
 else if (start.X < target.TopLeft.X)
 {
-	i = 0;
-	inc = 1;
-	end = target.BottomRight.X - start.X;
+    i = 0;
+    inc = 1;
+    end = target.BottomRight.X - start.X;
 }
 
 for (; i <= end; i += inc)
 {
-	projectile.Coord = start;
-	projectile.XVelocity = i;
+    projectile.Coord = start;
+    projectile.XVelocity = i;
 
-	for (var j = 0; j < 100; ++j)
-	{
-		projectile.Step();
+    for (var j = 0; j < 100; ++j)
+    {
+        projectile.Step();
 
-		if (projectile.IsInBoxByX(target))
-		{
-			validXVelocities.Add(i);
-			break;
-		}
-	}
+        if (projectile.IsInBoxByX(target))
+        {
+            validXVelocities.Add(i);
+            break;
+        }
+    }
 }
 
 var shots = new Dictionary<(int XVelocity, int YVelocity), int>();
 
 foreach (var xVelocity in validXVelocities)
 {
-	for (var yVelocity = 1000; yVelocity != -1000; --yVelocity)
+    for (var yVelocity = 1000; yVelocity != -1000; --yVelocity)
     {
-		projectile.Coord = start;
-		projectile.HighestYCoord = start.Y;
-		projectile.XVelocity = xVelocity;
-		projectile.YVelocity = yVelocity;
+        projectile.Coord = start;
+        projectile.HighestYCoord = start.Y;
+        projectile.XVelocity = xVelocity;
+        projectile.YVelocity = yVelocity;
 
-		var wasInBox = false;
+        var wasInBox = false;
 
-		for (var j = 0; j < 1000; ++j)
-		{
-			projectile.Step();
+        for (var j = 0; j < 1000; ++j)
+        {
+            projectile.Step();
 
-			if (projectile.IsInBox(target))
-			{
-				wasInBox = true;
-				break;
-			}
-		}
+            if (projectile.IsInBox(target))
+            {
+                wasInBox = true;
+                break;
+            }
+        }
 
-		if (wasInBox)
-			shots.Add((xVelocity, yVelocity), projectile.HighestYCoord);
-	}
+        if (wasInBox)
+            shots.Add((xVelocity, yVelocity), projectile.HighestYCoord);
+    }
 }
 
 Console.WriteLine($"Task1: highest y position: {shots.Select(s => s.Value).Max()}");
@@ -98,70 +98,70 @@ Console.WriteLine($"Task2: distinct shot velocities: {shots.Select(s => s.Key).D
 
 struct Point
 {
-	public int X { get; set; }
-	public int Y { get; set; }
+    public int X { get; set; }
+    public int Y { get; set; }
 
-	public Point(int x, int y)
+    public Point(int x, int y)
     {
-		X = x;
-		Y = y;
+        X = x;
+        Y = y;
     }
 }
 record Box(Point TopLeft, Point BottomRight)
 {
-	public bool IsIn(Point point)
-	{
-		return IsInX(point) && TopLeft.Y >= point.Y && point.Y >= BottomRight.Y;
-	}
+    public bool IsIn(Point point)
+    {
+        return IsInX(point) && TopLeft.Y >= point.Y && point.Y >= BottomRight.Y;
+    }
 
-	public bool IsInX(Point point)
-	{
-		return TopLeft.X <= point.X && point.X <= BottomRight.X;
-	}
+    public bool IsInX(Point point)
+    {
+        return TopLeft.X <= point.X && point.X <= BottomRight.X;
+    }
 
-	public Point GetMiddlePoint()
-	{
-		return new Point(TopLeft.X + Math.Abs(BottomRight.X - TopLeft.X) / 2, TopLeft.Y + Math.Abs(TopLeft.Y - BottomRight.Y) / 2);
-	}
+    public Point GetMiddlePoint()
+    {
+        return new Point(TopLeft.X + Math.Abs(BottomRight.X - TopLeft.X) / 2, TopLeft.Y + Math.Abs(TopLeft.Y - BottomRight.Y) / 2);
+    }
 }
 
 class Projectile
 {
-	public Point Coord { get; set; }
-	public int HighestYCoord { get; set; }
-	public int XVelocity { get; set; }
-	public int YVelocity { get; set; }
-	
-	public Projectile(Point startPoint, int startXVelocity, int startYVelocity)
+    public Point Coord { get; set; }
+    public int HighestYCoord { get; set; }
+    public int XVelocity { get; set; }
+    public int YVelocity { get; set; }
+    
+    public Projectile(Point startPoint, int startXVelocity, int startYVelocity)
     {
-		Coord = startPoint;
-		HighestYCoord = Coord.Y;
-		XVelocity = startXVelocity;
-		YVelocity = startYVelocity;
+        Coord = startPoint;
+        HighestYCoord = Coord.Y;
+        XVelocity = startXVelocity;
+        YVelocity = startYVelocity;
     }
 
-	public bool IsInBox(Box box)
+    public bool IsInBox(Box box)
     {
-		return box.IsIn(Coord);
+        return box.IsIn(Coord);
     }
 
-	public bool IsInBoxByX(Box box)
-	{
-		return box.IsInX(Coord);
-	}
-
-	public void Step()
+    public bool IsInBoxByX(Box box)
     {
-		Coord = new Point(Coord.X + XVelocity, Coord.Y + YVelocity);
+        return box.IsInX(Coord);
+    }
 
-		if (Coord.Y > HighestYCoord)
-			HighestYCoord = Coord.Y;
+    public void Step()
+    {
+        Coord = new Point(Coord.X + XVelocity, Coord.Y + YVelocity);
 
-		if (XVelocity > 0)
-			XVelocity -= 1;
-		else if (XVelocity < 0)
-			XVelocity += 1;
+        if (Coord.Y > HighestYCoord)
+            HighestYCoord = Coord.Y;
 
-		--YVelocity;
+        if (XVelocity > 0)
+            XVelocity -= 1;
+        else if (XVelocity < 0)
+            XVelocity += 1;
+
+        --YVelocity;
     }
 }
