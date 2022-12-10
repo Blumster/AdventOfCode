@@ -75,7 +75,6 @@ record class Coord(int X, int Y)
         var newX = X;
         var newY = Y;
 
-        // move the tail
         (var xDiff, var yDiff) = other.Distance(this);
         if (xDiff == 2 && yDiff == 2)
         {
