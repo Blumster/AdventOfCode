@@ -130,28 +130,28 @@ class Cave
 
         for (var i = 0; i < 3; ++i)
         {
-            Console.Write("    ");
+            sb.Append("    ");
 
             for (var y = TopLeft.Y; y <= BottomRight.Y; ++y)
             {
                 if (y == TopLeft.Y || y == SandSource.Y || y == BottomRight.Y)
                 {
-                    Console.Write(y / (int)Math.Pow(10, 2 - i) % 10);
+                    sb.Append(y / (int)Math.Pow(10, 2 - i) % 10);
                 }
                 else
-                    Console.Write(' ');
+                    sb.Append(' ');
             }
 
-            Console.WriteLine();
+            sb.AppendLine();
         }
 
         for (var x = TopLeft.X; x <= BottomRight.X; ++x)
         {
-            Console.Write($"{x,3} ");
+            sb.Append($"{x,3} ");
 
             for (var y = TopLeft.Y; y <= BottomRight.Y; ++y)
             {
-                Console.Write(GetBlockTypeAt(new Coord(x, y)) switch
+                sb.Append(GetBlockTypeAt(new Coord(x, y)) switch
                 {
                     BlockType.Air => '.',
                     BlockType.Rock => '#',
@@ -161,7 +161,7 @@ class Cave
                 });
             }
 
-            Console.WriteLine();
+            sb.AppendLine();
         }
 
         return sb.ToString();
